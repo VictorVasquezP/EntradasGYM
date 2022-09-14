@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EntradasGYM
@@ -17,6 +18,7 @@ namespace EntradasGYM
         private DPFP.Verification.Verification Verificator;
         //private UsuariosDBEntities contexto;
         private MySqlConnection connection;
+        MySqlConnectionStringBuilder builder;
 
         public void Verify(DPFP.Template template)
         {
@@ -27,7 +29,7 @@ namespace EntradasGYM
         protected override void Init()
         {
             base.Init();
-            base.Text = "Verificación de Huella Digital";
+            base.Text = "BERETTA TEAM";
             Verificator = new DPFP.Verification.Verification();     // Create a fingerprint template verificator
             UpdateStatus(0);
         }
@@ -35,7 +37,7 @@ namespace EntradasGYM
         private void UpdateStatus(int FAR)
         {
             // Show "False accept rate" value
-            SetStatus(String.Format("False Accept Rate (FAR) = {0}", FAR));
+            //SetStatus(String.Format("False Accept Rate (FAR) = {0}", FAR));
         }
 
         protected override void Process(DPFP.Sample Sample)
@@ -53,20 +55,6 @@ namespace EntradasGYM
                 DPFP.Verification.Verification.Result result = new DPFP.Verification.Verification.Result();
                 DPFP.Template template = new DPFP.Template();
                 Stream stream;
-                //foreach (var emp in contexto.Empleado)
-                //{
-                //    stream = new MemoryStream(emp.Huella);
-                //    template = new DPFP.Template(stream);
-
-                //    Verificator.Verify(features, template, ref result);
-                //    UpdateStatus(result.FARAchieved);
-                //    if (result.Verified)
-                //    {
-                //        MakeReport("La huella fue verificada. " + emp.Nombre);
-                //        break;
-                //    }
-                //}
-
                 //recuperamos la lista de clientes
                 connection.Open();
                 MySqlCommand command = new MySqlCommand("SELECT id, fecha_inicio, fecha_fin, foto, nombre, apellidos, huella FROM clientes", connection);
@@ -79,60 +67,65 @@ namespace EntradasGYM
                         {
                             stream = reader.GetStream(6);
                             template = new DPFP.Template(stream);
-                            Console.WriteLine(stream.Length);
-                            Console.WriteLine($"{reader.GetInt32(0)} \t {reader.GetDateTime(1)} \t {reader.GetString(4)}");
                             Verificator.Verify(features, template, ref result);
                             UpdateStatus(result.FARAchieved);
 
                             if (result.Verified)
                             {
-                                MakeReport("La huella fue verificada. " + reader.GetString(4));
+                                if (!reader.IsDBNull(3))
+                                {
+                                    Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
+                                    SetPicture(image);
+                                }
+                                DateTime fecha = DateTime.Now;
+                                DateTime fecha_fin = reader.GetDateTime(2);
+                                TimeSpan difFechas = fecha_fin - fecha;
+                                SetNombre(reader.GetString(4) + " "+ reader.GetString(5));
+                                SetInicio(reader.GetDateTime(1).ToLongDateString());
+                                SetFin(fecha_fin.ToLongDateString());
+                                SetDias(difFechas.Days);
+                                if (difFechas.Days >= 0)
+                                {
+                                    //insert table entradas
+                                    MySqlConnection conn = new MySqlConnection(builder.ToString());
+                                    conn.Open();
+                                    int retorno = 0;
+                                    DateTime date = DateTime.Now;
+                                    MySqlCommand comando = new MySqlCommand("INSERT INTO entradas (id_cliente, created_at, updated_at) VALUES (@a, @b, @c)", conn);
+                                    comando.Parameters.AddWithValue("@a",reader.GetInt32(0));
+                                    comando.Parameters.AddWithValue("@b",date);
+                                    comando.Parameters.AddWithValue("@c",date);
+                                    retorno = comando.ExecuteNonQuery();
+                                    conn.Close();
+                                }
+                                Thread.Sleep(6000);
+                                SetReset();
                                 break;
                             }
+                            Console.WriteLine(result.Verified);
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 reader.Close();
-
                 connection.Close();
             }
         }
 
         public frmVerificar()
         {
-            //contexto = new UsuariosDBEntities();
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
+            builder = new MySqlConnectionStringBuilder();
             builder.Server = "localhost";
             builder.Database = "gym_control";
             builder.UserID = "root";
             builder.Password = "victor";
             builder.Port = 3306;
             connection = new MySqlConnection(builder.ToString());
-            //connection.Open();
-            //MySqlCommand command = new MySqlCommand("SELECT id, fecha_inicio, fecha_fin, foto, nombre, apellidos, huella FROM clientes", connection);
-            //var reader = command.ExecuteReader();
-            //Stream stream;
-            //while (reader.Read())
-            //{
-            //    if (!reader.IsDBNull(6))
-            //    {
-            //        //long len = reader.GetBytes(6, 0, null, 0, 0);
-            //        //byte[] buffer = new byte[len];
-            //        //reader.GetBytes(6, 0, buffer, 0, (int)len);
-            //        stream = reader.GetStream(6);
-            //        Bitmap imagen = new Bitmap(Image.FromStream(stream));
-            //        SetPicture(imagen);
-            //        Console.WriteLine($"{reader.GetInt32(0)} \t {reader.GetDateTime(1)} \t {reader.GetString(4)}");
-            //        //Console.WriteLine(stream.Length);
-            //    }
-            //}
-            //reader.Close();
-            //connection.Close();
             InitializeComponent();
         }
+
     }
 }
