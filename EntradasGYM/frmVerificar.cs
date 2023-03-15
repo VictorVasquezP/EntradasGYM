@@ -75,7 +75,7 @@ namespace EntradasGYM
                                 if (!reader.IsDBNull(3))
                                 {
                                     //Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
-                                    Image image = Image.FromFile("C:\\rute\\public\\clientesfile\\3.jpg");
+                                    Image image = Image.FromFile("C:\\rute\\public\\clientesfile\\"+ reader.GetString(3));
                                     SetPicture(image);
                                 }
                                 DateTime fecha = DateTime.Now;
