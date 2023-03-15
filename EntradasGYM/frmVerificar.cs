@@ -74,7 +74,8 @@ namespace EntradasGYM
                             {
                                 if (!reader.IsDBNull(3))
                                 {
-                                    Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
+                                    //Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
+                                    Image image = Image.FromFile("C:\\rute\\public\\clientesfile\\3.jpg");
                                     SetPicture(image);
                                 }
                                 DateTime fecha = DateTime.Now;
@@ -121,7 +122,7 @@ namespace EntradasGYM
             builder.Server = "localhost";
             builder.Database = "gym_control";
             builder.UserID = "root";
-            builder.Password = "victor";
+            builder.Password = "";
             builder.Port = 3306;
             connection = new MySqlConnection(builder.ToString());
             InitializeComponent();

@@ -78,7 +78,6 @@ namespace EntradasGYM
             this.StatusLine.Name = "StatusLine";
             this.StatusLine.Size = new System.Drawing.Size(449, 39);
             this.StatusLine.TabIndex = 5;
-            this.StatusLine.Text = "[Status line]";
             this.StatusLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Prompt
@@ -147,7 +146,7 @@ namespace EntradasGYM
             // 
             // dias
             // 
-            this.dias.BackColor = System.Drawing.SystemColors.Control;
+            this.dias.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.dias.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dias.ForeColor = System.Drawing.SystemColors.Control;
             this.dias.Location = new System.Drawing.Point(455, 334);
@@ -189,6 +188,7 @@ namespace EntradasGYM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(750, 439);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.nombre);
