@@ -34,14 +34,13 @@ namespace EntradasGYM
             this.StatusLine = new System.Windows.Forms.Label();
             this.Prompt = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.fecha_inicio = new System.Windows.Forms.Label();
-            this.fecha_fin = new System.Windows.Forms.Label();
-            this.dias = new System.Windows.Forms.Label();
+            this.info = new System.Windows.Forms.Label();
             this.nombre = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.password = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.verifyPassword = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -52,7 +51,7 @@ namespace EntradasGYM
             this.PromptLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PromptLabel.Location = new System.Drawing.Point(304, 126);
             this.PromptLabel.Name = "PromptLabel";
-            this.PromptLabel.Size = new System.Drawing.Size(112, 16);
+            this.PromptLabel.Size = new System.Drawing.Size(111, 16);
             this.PromptLabel.TabIndex = 1;
             this.PromptLabel.Text = "Estado del lector:";
             // 
@@ -100,60 +99,21 @@ namespace EntradasGYM
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(354, 241);
+            this.label1.Location = new System.Drawing.Point(373, 241);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 16);
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label1.Size = new System.Drawing.Size(61, 16);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Fecha inicio:";
+            this.label1.Text = "Registro:";
             // 
-            // label2
+            // info
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(370, 292);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 16);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Fecha fin:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(342, 340);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(97, 16);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Días restantes:";
-            // 
-            // fecha_inicio
-            // 
-            this.fecha_inicio.AutoSize = true;
-            this.fecha_inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fecha_inicio.Location = new System.Drawing.Point(455, 241);
-            this.fecha_inicio.Name = "fecha_inicio";
-            this.fecha_inicio.Size = new System.Drawing.Size(0, 16);
-            this.fecha_inicio.TabIndex = 11;
-            // 
-            // fecha_fin
-            // 
-            this.fecha_fin.AutoSize = true;
-            this.fecha_fin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fecha_fin.Location = new System.Drawing.Point(455, 292);
-            this.fecha_fin.Name = "fecha_fin";
-            this.fecha_fin.Size = new System.Drawing.Size(0, 16);
-            this.fecha_fin.TabIndex = 12;
-            // 
-            // dias
-            // 
-            this.dias.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dias.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dias.ForeColor = System.Drawing.SystemColors.Control;
-            this.dias.Location = new System.Drawing.Point(455, 334);
-            this.dias.Name = "dias";
-            this.dias.Size = new System.Drawing.Size(146, 22);
-            this.dias.TabIndex = 13;
-            this.dias.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.info.AutoSize = true;
+            this.info.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.info.Location = new System.Drawing.Point(455, 241);
+            this.info.Name = "info";
+            this.info.Size = new System.Drawing.Size(0, 16);
+            this.info.TabIndex = 11;
             // 
             // nombre
             // 
@@ -170,7 +130,7 @@ namespace EntradasGYM
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(375, 196);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 16);
+            this.label5.Size = new System.Drawing.Size(59, 16);
             this.label5.TabIndex = 14;
             this.label5.Text = "Nombre:";
             // 
@@ -184,20 +144,48 @@ namespace EntradasGYM
             this.pictureBox1.TabIndex = 16;
             this.pictureBox1.TabStop = false;
             // 
+            // password
+            // 
+            this.password.Location = new System.Drawing.Point(458, 317);
+            this.password.Name = "password";
+            this.password.Size = new System.Drawing.Size(234, 20);
+            this.password.TabIndex = 17;
+            this.password.UseSystemPasswordChar = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(310, 317);
+            this.label2.Name = "label2";
+            this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label2.Size = new System.Drawing.Size(142, 16);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "Contraseña (opcional):";
+            // 
+            // verifyPassword
+            // 
+            this.verifyPassword.Location = new System.Drawing.Point(529, 352);
+            this.verifyPassword.Name = "verifyPassword";
+            this.verifyPassword.Size = new System.Drawing.Size(75, 23);
+            this.verifyPassword.TabIndex = 19;
+            this.verifyPassword.Text = "Verificar con contraseña";
+            this.verifyPassword.UseVisualStyleBackColor = true;
+            this.verifyPassword.Click += new System.EventHandler(this.verifyPassword_Click);
+            // 
             // CaptureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(750, 439);
+            this.Controls.Add(this.verifyPassword);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.password);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.dias);
-            this.Controls.Add(this.fecha_fin);
-            this.Controls.Add(this.fecha_inicio);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.info);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Prompt);
             this.Controls.Add(this.StatusLine);
@@ -227,13 +215,12 @@ namespace EntradasGYM
         private System.Windows.Forms.Label PromptLabel;
         private System.Windows.Forms.Label Prompt;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label fecha_inicio;
-        private System.Windows.Forms.Label fecha_fin;
-        private System.Windows.Forms.Label dias;
+        private System.Windows.Forms.Label info;
         private System.Windows.Forms.Label nombre;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox password;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button verifyPassword;
     }
 }

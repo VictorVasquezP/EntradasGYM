@@ -16,9 +16,6 @@ namespace EntradasGYM
     {
         private DPFP.Template Template;
         private DPFP.Verification.Verification Verificator;
-        //private UsuariosDBEntities contexto;
-        private MySqlConnection connection;
-        MySqlConnectionStringBuilder builder;
 
         public void Verify(DPFP.Template template)
         {
@@ -55,76 +52,60 @@ namespace EntradasGYM
                 DPFP.Verification.Verification.Result result = new DPFP.Verification.Verification.Result();
                 DPFP.Template template = new DPFP.Template();
                 Stream stream;
+                Console.WriteLine("Evento Canon");
                 //recuperamos la lista de clientes
-                connection.Open();
-                MySqlCommand command = new MySqlCommand("SELECT id, fecha_inicio, fecha_fin, foto, nombre, apellidos, huella FROM clientes", connection);
-                var reader = command.ExecuteReader();
+                //List<Empleados> empleados;
                 try
                 {
-                    while (reader.Read())
-                    {
-                        if (!reader.IsDBNull(6))
-                        {
-                            stream = reader.GetStream(6);
-                            template = new DPFP.Template(stream);
-                            Verificator.Verify(features, template, ref result);
-                            UpdateStatus(result.FARAchieved);
+                    /*
+                    stream = reader.GetStream(6);
+                    template = new DPFP.Template(stream);
+                    Verificator.Verify(features, template, ref result);
+                    UpdateStatus(result.FARAchieved);
 
-                            if (result.Verified)
-                            {
-                                if (!reader.IsDBNull(3))
-                                {
-                                    //Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
-                                    Image image = Image.FromFile("C:\\rute\\public\\clientesfile\\"+ reader.GetString(3));
-                                    SetPicture(image);
-                                }
-                                DateTime fecha = DateTime.Now;
-                                DateTime fecha_fin = reader.GetDateTime(2);
-                                TimeSpan difFechas = fecha_fin - fecha;
-                                SetNombre(reader.GetString(4) + " "+ reader.GetString(5));
-                                SetInicio(reader.GetDateTime(1).ToLongDateString());
-                                SetFin(fecha_fin.ToLongDateString());
-                                SetDias(difFechas.Days);
-                                if (difFechas.Days >= 0)
-                                {
-                                    //insert table entradas
-                                    MySqlConnection conn = new MySqlConnection(builder.ToString());
-                                    conn.Open();
-                                    int retorno = 0;
-                                    DateTime date = DateTime.Now;
-                                    MySqlCommand comando = new MySqlCommand("INSERT INTO entradas (id_cliente, created_at, updated_at) VALUES (@a, @b, @c)", conn);
-                                    comando.Parameters.AddWithValue("@a",reader.GetInt32(0));
-                                    comando.Parameters.AddWithValue("@b",date);
-                                    comando.Parameters.AddWithValue("@c",date);
-                                    retorno = comando.ExecuteNonQuery();
-                                    conn.Close();
-                                }
-                                Thread.Sleep(6000);
-                                SetReset();
-                                break;
-                            }
-                            Console.WriteLine(result.Verified);
+                    if (result.Verified)
+                    {
+                        if (!reader.IsDBNull(3))
+                        {
+                            //Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
+                            Image image = Image.FromFile("C:\\xampp\\htdocs\\gym_control\\public\\clientesfile\\" + reader.GetString(3));
+                            SetPicture(image);
                         }
+                        DateTime fecha = DateTime.Now;
+                        DateTime fecha_fin = reader.GetDateTime(2);
+                        TimeSpan difFechas = fecha_fin - fecha;
+                        SetNombre(reader.GetString(4) + " "+ reader.GetString(5));
+                        SetInicio(reader.GetDateTime(1).ToLongDateString());
+                        if (difFechas.Days >= 0)
+                        {
+                            //insert table entradas
+                            MySqlConnection conn = new MySqlConnection(builder.ToString());
+                            conn.Open();
+                            int retorno = 0;
+                            DateTime date = DateTime.Now;
+                            MySqlCommand comando = new MySqlCommand("INSERT INTO entradas (id_cliente, created_at, updated_at) VALUES (@a, @b, @c)", conn);
+                            comando.Parameters.AddWithValue("@a",reader.GetInt32(0));
+                            comando.Parameters.AddWithValue("@b",date);
+                            comando.Parameters.AddWithValue("@c",date);
+                            retorno = comando.ExecuteNonQuery();
+                            conn.Close();
+                        }
+                        Thread.Sleep(6000);
+                        SetReset();
+                        break;
                     }
+                    Console.WriteLine(result.Verified);
+                    */
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                reader.Close();
-                connection.Close();
             }
         }
 
         public frmVerificar()
         {
-            builder = new MySqlConnectionStringBuilder();
-            builder.Server = "localhost";
-            builder.Database = "gym_control";
-            builder.UserID = "root";
-            builder.Password = "";
-            builder.Port = 3306;
-            connection = new MySqlConnection(builder.ToString());
             InitializeComponent();
         }
 

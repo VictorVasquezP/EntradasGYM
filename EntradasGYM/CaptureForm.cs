@@ -1,9 +1,8 @@
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Windows.Forms;
 
@@ -154,7 +153,7 @@ namespace EntradasGYM
 		protected void SetInicio(string message)
 		{
 			this.Invoke(new Function(delegate () {
-				fecha_inicio.Text = message;
+				info.Text = message;
 			}));
 		}
 
@@ -165,57 +164,20 @@ namespace EntradasGYM
 			}));
 		}
 
-		protected void SetFin(string message)
-		{
-			this.Invoke(new Function(delegate () {
-				fecha_fin.Text = message;
-			}));
-		}
-
-		protected void SetDias(int num)
-		{
-			this.Invoke(new Function(delegate () {
-                if (num > 0)
-                {
-					dias.Text = num + " DÍAS";
-					dias.BackColor = Color.DarkGreen;
-					StatusLine.BackColor = Color.DarkGreen;
-					StatusLine.Text = "ENTRADA REGISTRADA";
-				}
-                else if(num == 0)
-                {
-					dias.Text = "HOY TERMINA";
-					dias.BackColor = Color.DarkGreen;
-					StatusLine.BackColor = Color.DarkGreen;
-					StatusLine.Text = "ENTRADA REGISTRADA";
-                }
-                else
-                {
-					dias.Text = "SIN DÍAS";
-					dias.BackColor = Color.DarkRed;
-					StatusLine.BackColor = Color.DarkRed;
-					StatusLine.Text = "SUSCRIPCIÓN VENCIDA";
-				}
-				
-			}));
-		}
-
 		protected void SetReset()
-        {
-			this.Invoke(new Function(delegate () {
+		{
+			this.Invoke(new Function(delegate ()
+			{
 				nombre.Text = "";
-				fecha_fin.Text = "";
-				fecha_inicio.Text = "";
-				dias.Text = "";
-				dias.BackColor = SystemColors.Control;
+				info.Text = "";
+				password.Text = "";
 				StatusLine.Text = "";
 				StatusLine.BackColor = SystemColors.Control;
 				Picture.Image = null;
 			}));
-			
 		}
 
-		private void DrawPicture(Bitmap bitmap)
+            private void DrawPicture(Bitmap bitmap)
 		{
 			this.Invoke(new Function(delegate() {
                 Picture.Image = new Bitmap(bitmap, Picture.Size);	// fit the image into the picture box
@@ -232,6 +194,62 @@ namespace EntradasGYM
         private void CloseButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private async void verifyPassword_Click(object sender, EventArgs e)
+        {
+            //send password
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string url = "http://127.0.0.1:8000/api/asistencia/password"; // URL de la API
+
+                    // Crear un objeto con los datos que deseas enviar
+                    var datos = new { password = password.Text };
+
+                    // Serializar los datos a formato JSON
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(datos);
+
+                    // Crear el contenido de la solicitud con el JSON
+                    var contenido = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    // Realizar la solicitud POST y obtener la respuesta
+                    HttpResponseMessage response = await client.PostAsync(url, contenido);
+
+                    // Verificar si la solicitud fue exitosa
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // La solicitud fue exitosa, puedes realizar alguna acción con la respuesta
+                        string contenidoRespuesta = await response.Content.ReadAsStringAsync();
+                        JObject jsonEmpleado = JObject.Parse(contenidoRespuesta);
+                        string status = (string)jsonEmpleado["status"];
+                        bool message = (bool)jsonEmpleado["message"];
+						Console.WriteLine(message);
+						Console.WriteLine(status);
+                        if (status == "200" && message)
+						{
+                            string base64 = (string)jsonEmpleado["data"];
+                            string nombre = (string)jsonEmpleado["nombre"];
+                            string info = (string)jsonEmpleado["info"];
+                            Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(base64))); // convertir base64 a Image
+							SetNombre(nombre);
+							SetInicio(info);
+							SetPicture(image);
+						}
+                    }
+                    else
+                    {
+                        // La solicitud no fue exitosa, puedes manejar el error de acuerdo a tus necesidades
+                        Console.WriteLine("La solicitud no fue exitosa. Código de estado: " + response.StatusCode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción que pueda ocurrir durante la solicitud
+                Console.WriteLine("Error: " + ex.Message);
+            }
         }
     }
 }
