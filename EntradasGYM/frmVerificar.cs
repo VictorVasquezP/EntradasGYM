@@ -1,4 +1,5 @@
 ﻿using MySqlConnector;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -16,6 +18,8 @@ namespace EntradasGYM
     {
         private DPFP.Template Template;
         private DPFP.Verification.Verification Verificator;
+        private MySqlConnection connection;
+        MySqlConnectionStringBuilder builder;
 
         public void Verify(DPFP.Template template)
         {
@@ -26,7 +30,7 @@ namespace EntradasGYM
         protected override void Init()
         {
             base.Init();
-            base.Text = "BERETTA TEAM";
+            base.Text = "EL REY CONDOY";
             Verificator = new DPFP.Verification.Verification();     // Create a fingerprint template verificator
             UpdateStatus(0);
         }
@@ -37,7 +41,7 @@ namespace EntradasGYM
             //SetStatus(String.Format("False Accept Rate (FAR) = {0}", FAR));
         }
 
-        protected override void Process(DPFP.Sample Sample)
+        protected override async void Process(DPFP.Sample Sample)
         {
             base.Process(Sample);
 
@@ -52,55 +56,81 @@ namespace EntradasGYM
                 DPFP.Verification.Verification.Result result = new DPFP.Verification.Verification.Result();
                 DPFP.Template template = new DPFP.Template();
                 Stream stream;
-                Console.WriteLine("Evento Canon");
                 //recuperamos la lista de clientes
-                //List<Empleados> empleados;
+                connection.Open();
+                MySqlCommand command = new MySqlCommand("SELECT id, nombre, huella FROM empleados", connection);
+                var reader = command.ExecuteReader();
                 try
                 {
-                    /*
-                    stream = reader.GetStream(6);
-                    template = new DPFP.Template(stream);
-                    Verificator.Verify(features, template, ref result);
-                    UpdateStatus(result.FARAchieved);
-
-                    if (result.Verified)
+                    while (reader.Read())
                     {
-                        if (!reader.IsDBNull(3))
+                        if (!reader.IsDBNull(6))
                         {
-                            //Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(reader.GetString(3)))); // convertir base64 a Image
-                            Image image = Image.FromFile("C:\\xampp\\htdocs\\gym_control\\public\\clientesfile\\" + reader.GetString(3));
-                            SetPicture(image);
+                            stream = reader.GetStream(6);
+                            template = new DPFP.Template(stream);
+                            Verificator.Verify(features, template, ref result);
+                            UpdateStatus(result.FARAchieved);
+
+                            if (result.Verified)
+                            {
+                                //POST ASISTENCIA
+                                using (HttpClient client = new HttpClient())
+                                {
+                                    string url = "http://127.0.0.1:8000/api/asistencia"; // URL de la API
+
+                                    // Crear un objeto con los datos que deseas enviar
+                                    var datos = new { id = 1 };
+
+                                    // Serializar los datos a formato JSON
+                                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(datos);
+
+                                    // Crear el contenido de la solicitud con el JSON
+                                    var contenido = new StringContent(json, Encoding.UTF8, "application/json");
+
+                                    // Realizar la solicitud POST y obtener la respuesta
+                                    HttpResponseMessage response = await client.PostAsync(url, contenido);
+
+                                    // Verificar si la solicitud fue exitosa
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        // La solicitud fue exitosa, puedes realizar alguna acción con la respuesta
+                                        string contenidoRespuesta = await response.Content.ReadAsStringAsync();
+                                        JObject jsonEmpleado = JObject.Parse(contenidoRespuesta);
+                                        string status = (string)jsonEmpleado["status"];
+                                        bool message = (bool)jsonEmpleado["message"];
+                                        Console.WriteLine(message);
+                                        Console.WriteLine(status);
+                                        if (status == "200" && message)
+                                        {
+                                            string base64 = (string)jsonEmpleado["data"];
+                                            string nombre = (string)jsonEmpleado["nombre"];
+                                            string info = (string)jsonEmpleado["info"];
+                                            Image image = Image.FromStream(new MemoryStream(Convert.FromBase64String(base64))); // convertir base64 a Image
+                                            SetNombre(nombre);
+                                            SetInicio(info);
+                                            SetPicture(image);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // La solicitud no fue exitosa, puedes manejar el error de acuerdo a tus necesidades
+                                        Console.WriteLine("La solicitud no fue exitosa. Código de estado: " + response.StatusCode);
+                                    }
+                                }
+                                Thread.Sleep(6000);
+                                SetReset();
+                                break;
+                            }
+                            Console.WriteLine(result.Verified);
                         }
-                        DateTime fecha = DateTime.Now;
-                        DateTime fecha_fin = reader.GetDateTime(2);
-                        TimeSpan difFechas = fecha_fin - fecha;
-                        SetNombre(reader.GetString(4) + " "+ reader.GetString(5));
-                        SetInicio(reader.GetDateTime(1).ToLongDateString());
-                        if (difFechas.Days >= 0)
-                        {
-                            //insert table entradas
-                            MySqlConnection conn = new MySqlConnection(builder.ToString());
-                            conn.Open();
-                            int retorno = 0;
-                            DateTime date = DateTime.Now;
-                            MySqlCommand comando = new MySqlCommand("INSERT INTO entradas (id_cliente, created_at, updated_at) VALUES (@a, @b, @c)", conn);
-                            comando.Parameters.AddWithValue("@a",reader.GetInt32(0));
-                            comando.Parameters.AddWithValue("@b",date);
-                            comando.Parameters.AddWithValue("@c",date);
-                            retorno = comando.ExecuteNonQuery();
-                            conn.Close();
-                        }
-                        Thread.Sleep(6000);
-                        SetReset();
-                        break;
                     }
-                    Console.WriteLine(result.Verified);
-                    */
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                reader.Close();
+                connection.Close();
             }
         }
 
