@@ -30,19 +30,19 @@ namespace EntradasGYM
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaptureForm));
             this.PromptLabel = new System.Windows.Forms.Label();
-            this.Picture = new System.Windows.Forms.PictureBox();
             this.StatusLine = new System.Windows.Forms.Label();
             this.Prompt = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.info = new System.Windows.Forms.Label();
             this.nombre = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.password = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.verifyPassword = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Picture = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).BeginInit();
             this.SuspendLayout();
             // 
             // PromptLabel
@@ -51,21 +51,9 @@ namespace EntradasGYM
             this.PromptLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PromptLabel.Location = new System.Drawing.Point(304, 126);
             this.PromptLabel.Name = "PromptLabel";
-            this.PromptLabel.Size = new System.Drawing.Size(111, 16);
+            this.PromptLabel.Size = new System.Drawing.Size(112, 16);
             this.PromptLabel.TabIndex = 1;
             this.PromptLabel.Text = "Estado del lector:";
-            // 
-            // Picture
-            // 
-            this.Picture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.Picture.BackColor = System.Drawing.SystemColors.Window;
-            this.Picture.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Picture.Location = new System.Drawing.Point(12, 12);
-            this.Picture.Name = "Picture";
-            this.Picture.Size = new System.Drawing.Size(277, 373);
-            this.Picture.TabIndex = 0;
-            this.Picture.TabStop = false;
             // 
             // StatusLine
             // 
@@ -99,10 +87,10 @@ namespace EntradasGYM
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(373, 241);
+            this.label1.Location = new System.Drawing.Point(310, 241);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label1.Size = new System.Drawing.Size(61, 16);
+            this.label1.Size = new System.Drawing.Size(62, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "Registro:";
             // 
@@ -110,7 +98,7 @@ namespace EntradasGYM
             // 
             this.info.AutoSize = true;
             this.info.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.info.Location = new System.Drawing.Point(455, 241);
+            this.info.Location = new System.Drawing.Point(392, 241);
             this.info.Name = "info";
             this.info.Size = new System.Drawing.Size(0, 16);
             this.info.TabIndex = 11;
@@ -119,7 +107,7 @@ namespace EntradasGYM
             // 
             this.nombre.AutoSize = true;
             this.nombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nombre.Location = new System.Drawing.Point(455, 196);
+            this.nombre.Location = new System.Drawing.Point(392, 196);
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(0, 16);
             this.nombre.TabIndex = 15;
@@ -128,21 +116,11 @@ namespace EntradasGYM
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(375, 196);
+            this.label5.Location = new System.Drawing.Point(312, 196);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 16);
+            this.label5.Size = new System.Drawing.Size(60, 16);
             this.label5.TabIndex = 14;
             this.label5.Text = "Nombre:";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::EntradasGYM.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(436, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(178, 97);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
             // 
             // password
             // 
@@ -159,19 +137,41 @@ namespace EntradasGYM
             this.label2.Location = new System.Drawing.Point(310, 317);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(142, 16);
+            this.label2.Size = new System.Drawing.Size(143, 16);
             this.label2.TabIndex = 18;
             this.label2.Text = "Contraseña (opcional):";
             // 
             // verifyPassword
             // 
-            this.verifyPassword.Location = new System.Drawing.Point(529, 352);
+            this.verifyPassword.Location = new System.Drawing.Point(436, 365);
             this.verifyPassword.Name = "verifyPassword";
-            this.verifyPassword.Size = new System.Drawing.Size(75, 23);
+            this.verifyPassword.Size = new System.Drawing.Size(179, 23);
             this.verifyPassword.TabIndex = 19;
             this.verifyPassword.Text = "Verificar con contraseña";
             this.verifyPassword.UseVisualStyleBackColor = true;
             this.verifyPassword.Click += new System.EventHandler(this.verifyPassword_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::EntradasGYM.Properties.Resources.logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(494, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(107, 100);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
+            // Picture
+            // 
+            this.Picture.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Picture.BackColor = System.Drawing.SystemColors.Window;
+            this.Picture.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Picture.Location = new System.Drawing.Point(12, 12);
+            this.Picture.Name = "Picture";
+            this.Picture.Size = new System.Drawing.Size(277, 373);
+            this.Picture.TabIndex = 0;
+            this.Picture.TabStop = false;
             // 
             // CaptureForm
             // 
@@ -198,11 +198,11 @@ namespace EntradasGYM
             this.MinimumSize = new System.Drawing.Size(400, 300);
             this.Name = "CaptureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BERETTA TEAM";
+            this.Text = "El Rey Condoy";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CaptureForm_FormClosed);
             this.Load += new System.EventHandler(this.CaptureForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Picture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

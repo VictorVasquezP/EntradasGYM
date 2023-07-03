@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(750, 425);
             this.Name = "frmVerificar";
             this.Text = "frmVerificar";
+            this.Load += new System.EventHandler(this.frmVerificar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

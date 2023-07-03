@@ -64,22 +64,23 @@ namespace EntradasGYM
                 {
                     while (reader.Read())
                     {
-                        if (!reader.IsDBNull(6))
+                        if (!reader.IsDBNull(2))
                         {
-                            stream = reader.GetStream(6);
+                            stream = reader.GetStream(2);
                             template = new DPFP.Template(stream);
                             Verificator.Verify(features, template, ref result);
                             UpdateStatus(result.FARAchieved);
-
+                            Console.WriteLine("if");
                             if (result.Verified)
                             {
+                                Console.WriteLine("Entre");
                                 //POST ASISTENCIA
                                 using (HttpClient client = new HttpClient())
                                 {
                                     string url = "http://127.0.0.1:8000/api/asistencia"; // URL de la API
 
                                     // Crear un objeto con los datos que deseas enviar
-                                    var datos = new { id = 1 };
+                                    var datos = new { id = reader.GetInt32(0) };
 
                                     // Serializar los datos a formato JSON
                                     string json = Newtonsoft.Json.JsonConvert.SerializeObject(datos);
@@ -95,6 +96,7 @@ namespace EntradasGYM
                                     {
                                         // La solicitud fue exitosa, puedes realizar alguna acción con la respuesta
                                         string contenidoRespuesta = await response.Content.ReadAsStringAsync();
+                                        Console.WriteLine(contenidoRespuesta);
                                         JObject jsonEmpleado = JObject.Parse(contenidoRespuesta);
                                         string status = (string)jsonEmpleado["status"];
                                         bool message = (bool)jsonEmpleado["message"];
@@ -136,8 +138,19 @@ namespace EntradasGYM
 
         public frmVerificar()
         {
+            builder = new MySqlConnectionStringBuilder();
+            builder.Server = "localhost";
+            builder.Database = "ca_db";
+            builder.UserID = "root";
+            builder.Password = "";
+            builder.Port = 3306;
+            connection = new MySqlConnection(builder.ToString());
             InitializeComponent();
         }
 
+        private void frmVerificar_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

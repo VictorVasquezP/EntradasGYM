@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EntradasGYM
@@ -236,6 +237,8 @@ namespace EntradasGYM
 							SetNombre(nombre);
 							SetInicio(info);
 							SetPicture(image);
+							Thread.Sleep(6000);
+							SetReset();
 						}
                     }
                     else
