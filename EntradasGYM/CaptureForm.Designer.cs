@@ -153,7 +153,7 @@ namespace EntradasGYM
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::EntradasGYM.Properties.Resources.logo1;
+            this.pictureBox1.Image = global::RegistroAsistencias.Properties.Resources.logo1;
             this.pictureBox1.Location = new System.Drawing.Point(494, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(107, 100);
