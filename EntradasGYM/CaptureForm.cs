@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EntradasGYM
@@ -237,8 +238,7 @@ namespace EntradasGYM
 							SetNombre(nombre);
 							SetInicio(info);
 							SetPicture(image);
-							Thread.Sleep(6000);
-							SetReset();
+							
 						}
                     }
                     else
@@ -247,7 +247,12 @@ namespace EntradasGYM
                         Console.WriteLine("La solicitud no fue exitosa. Código de estado: " + response.StatusCode);
                     }
                 }
-            }
+				//Thread.Sleep(6000);
+				
+				await Task.Delay(6000);
+				SetReset();
+
+			}
             catch (Exception ex)
             {
                 // Manejar cualquier excepción que pueda ocurrir durante la solicitud
